@@ -1,5 +1,11 @@
 import React from 'react';
 
-function Header() {}
+function Header() {
+  return (
+    <header>
+      <h2>Awesome Astronomy POD App</h2>
+    </header>
+  );
+}
 
 export default Header;
