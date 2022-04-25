@@ -1,6 +1,8 @@
 import React from "react";
 import Header from '../header';
 import DateSelection from './dateSelection';
+import ImageContainer from './imageContainer';
+import InfoContainer from './infoContainer';
 import Footer from '../footer';
 
 function parseDate(date = new Date()) {
@@ -34,6 +36,12 @@ function Main() {
       <React.Fragment>
         <Header />
         <DateSelection />
+        <ImageContainer
+          date={image.date}
+          imageUrl={image.url}
+          title={image.title}
+        />
+        <InfoContainer explanation={image.explanation} />
         <Footer />
       </React.Fragment>
   );

@@ -2,7 +2,6 @@ import { render } from '@testing-library/react';
 import { screen } from '@testing-library/dom'
 import DateSelection from './dateSelection';
 
-
 it('renders the input and the show button', () => {
   render(<DateSelection />);
 

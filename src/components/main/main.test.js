@@ -3,7 +3,7 @@ import { screen } from '@testing-library/dom'
 import userEvent from '@testing-library/user-event'
 import Main from './main';
 
-import { photo } from '../../mocks/data';
+import { mockImage } from '../../mocks/data';
 
 const setup = () => render(<Main />);
 
@@ -26,9 +26,9 @@ it('renders the footer', () => {
 it('shows the Picture of the Day by default', async () => {
   setup();
 
-  const photoTitle = screen.getByText(photo.title);
-  const photoDate = screen.getByText(photo.date);
-  const photoExplanation = screen.getByText(photo.explanation);
+  const photoTitle = screen.getByText(mockImage.title);
+  const photoDate = screen.getByText(mockImage.date);
+  const photoExplanation = screen.getByText(mockImage.explanation);
 
   expect(photoTitle).toBeInTheDocument();
   expect(photoDate).toBeInTheDocument();
