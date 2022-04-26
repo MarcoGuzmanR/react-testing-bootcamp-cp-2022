@@ -1,51 +1,65 @@
 import { render, waitFor } from '@testing-library/react';
 import { screen } from '@testing-library/dom'
 import userEvent from '@testing-library/user-event'
+
+import { server } from '../../mocks/server';
 import Main from './main';
 
-import { mockImage } from '../../mocks/data';
+import { mockImage, otherMockImage } from '../../mocks/data';
 
 const setup = () => render(<Main />);
 
-it('renders the title', () => {
-  setup();
+beforeAll(() => server.listen());
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
 
-  const titleHeading = screen.getByText(/awesome astronomy pod app/i);
+describe(('Main Component'), () => {
+  it('renders the title', () => {
+    setup();
 
-  expect(titleHeading).toBeInTheDocument();
-});
+    const titleHeading = screen.getByText(/awesome astronomy pod app/i);
 
-it('renders the footer', () => {
-  setup();
-
-  const footerText = screen.getByText(/project created during wizeline academy react testing bootcamp/i);
-
-  expect(footerText).toBeInTheDocument();
-});
-
-it('shows the Picture of the Day by default', async () => {
-  setup();
-
-  await waitFor(() => {
-    const photoTitle = screen.getByText(mockImage.title);
-
-    expect(photoTitle).toBeInTheDocument();
+    expect(titleHeading).toBeInTheDocument();
   });
+
+  it('renders the footer', () => {
+    setup();
+
+    const footerText = screen.getByText(/project created during wizeline academy react testing bootcamp/i);
+
+    expect(footerText).toBeInTheDocument();
+  });
+
+  it('shows the Picture of the Day by default', async () => {
+    setup();
+
+    await waitFor(() => {
+      const imageTitle = screen.getByText(mockImage.title);
+
+      expect(imageTitle).toBeInTheDocument();
+    });
+  });
+
+  it('shows the Picture of the Day when entering a previous date', async () => {
+    setup();
+
+    const dateInput = screen.getByLabelText(/date/i);
+    const showBtn = screen.getByText(/show/i);
+
+    await userEvent.type(dateInput, '2022-04-23');
+    await userEvent.click(showBtn);
+
+    expect(dateInput).toHaveValue('2022-04-23');
+    expect(showBtn).toBeInTheDocument();
+
+    await waitFor(() => {
+      const imageTitle = screen.getByText(otherMockImage.title);
+
+      expect(imageTitle).toBeInTheDocument();
+    });
+  });
+
+  it.todo('shows an error message when the API call fails');
+
+  it.todo('shows an error message when there is an invalid date');
 });
-
-it('shows the Picture of the Day when entering a previous date', async () => {
-  setup();
-
-  const dateInput = screen.getByLabelText(/date/i);
-  const showBtn = screen.getByText(/show/i);
-
-  await userEvent.type(dateInput, '2022-04-24');
-  await userEvent.click(showBtn);
-
-  expect(dateInput).toHaveValue('2022-04-24');
-  expect(showBtn).toBeInTheDocument();
-});
-
-it.todo('shows an error message when the API call fails');
-
-it.todo('shows an error message when there is an invalid date');

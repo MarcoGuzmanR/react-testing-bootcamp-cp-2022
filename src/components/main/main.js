@@ -21,6 +21,17 @@ function Main() {
   const [date, setDate] = React.useState(parseDate());
   const [image, setImage] = React.useState({});
 
+  function handleOnChange(e) {
+    setDate(e.target.value);
+  }
+
+  async function handleOnClick() {
+      const response = await fetch(`https://api.nasa.gov/planetary/apod?api_key=9EzH6lZbenXDdtdPawEJVGNJ6nToY1PLueewH6GT&date=${date}`);
+      const imageData = await response.json();
+
+      setImage(imageData);
+  }
+
   React.useEffect(() => {
     async function fetchImage() {
         const response = await fetch('https://api.nasa.gov/planetary/apod?api_key=9EzH6lZbenXDdtdPawEJVGNJ6nToY1PLueewH6GT');
@@ -35,7 +46,7 @@ function Main() {
   return (
       <React.Fragment>
         <Header />
-        <DateSelection />
+        <DateSelection handleOnChange={handleOnChange} handleOnClick={handleOnClick} />
         <ImageContainer
           date={image.date}
           imageUrl={image.url}

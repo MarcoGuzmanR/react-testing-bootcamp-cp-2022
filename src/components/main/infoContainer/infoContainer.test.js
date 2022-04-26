@@ -13,5 +13,3 @@ it('renders the explanation of the image', () => {
 
   expect(photoExplanation).toBeInTheDocument();
 });
-
-// it.todo('renders the explanation of the image')
