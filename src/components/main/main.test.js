@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import { screen } from '@testing-library/dom'
 import userEvent from '@testing-library/user-event'
 import Main from './main';
@@ -26,13 +26,11 @@ it('renders the footer', () => {
 it('shows the Picture of the Day by default', async () => {
   setup();
 
-  const photoTitle = screen.getByText(mockImage.title);
-  const photoDate = screen.getByText(mockImage.date);
-  const photoExplanation = screen.getByText(mockImage.explanation);
+  await waitFor(() => {
+    const photoTitle = screen.getByText(mockImage.title);
 
-  expect(photoTitle).toBeInTheDocument();
-  expect(photoDate).toBeInTheDocument();
-  expect(photoExplanation).toBeInTheDocument();
+    expect(photoTitle).toBeInTheDocument();
+  });
 });
 
 it('shows the Picture of the Day when entering a previous date', async () => {

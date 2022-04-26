@@ -1,12 +1,12 @@
 import { rest } from 'msw';
 
-import { photo } from './data';
+import { mockImage } from './data';
 
 export const handlers = [
-  rest.get('/api.nasa.gov/planetary/apod', (req, res, ctx) => {
+  rest.get('https://api.nasa.gov/planetary/apod', (req, res, ctx) => {
     return res(
         ctx.status(200),
-        ctx.json(photo),
+        ctx.json(mockImage)
       )
   }),
 ];
