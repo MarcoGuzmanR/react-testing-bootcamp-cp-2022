@@ -3,6 +3,7 @@ import { screen } from '@testing-library/dom'
 import userEvent from '@testing-library/user-event'
 
 import { server } from '../../mocks/server';
+import { parseDate } from '../../utils/parseDate';
 import Main from './main';
 
 import { mockImage, otherMockImage } from '../../mocks/data';
@@ -59,7 +60,48 @@ describe(('Main Component'), () => {
     });
   });
 
-  it.todo('shows an error message when the API call fails');
+  it('shows an error message when the API call fails', async () => {
+    setup();
 
-  it.todo('shows an error message when there is an invalid date');
+    await waitFor(() => {
+      const errorText = screen.getByLabelText(/error/i);
+
+      expect(errorText).toHaveTextContent(/there was an error, please try again./i);
+    });
+
+  });
+
+  it('shows an error message when there is an invalid date (one year ahead)', async () => {
+    setup();
+
+    const dateOneYearAhead = new Date(new Date().setFullYear(new Date().getFullYear() + 1));
+
+    const dateInput = screen.getByLabelText(/date/i);
+    const showBtn = screen.getByText(/show/i);
+
+    await userEvent.type(dateInput, parseDate(dateOneYearAhead));
+    await userEvent.click(showBtn);
+
+    await waitFor(() => {
+      const errorText = screen.getByText(/date must be between Jun 16, 1995 and Apr 26, 2022./i);
+
+      expect(errorText).toBeInTheDocument();
+    });
+  });
+
+//   it('shows an error message when there is an invalid date (out of range of month)', async () => {
+//     setup();
+
+//     const dateInput = screen.getByLabelText(/date/i);
+//     const showBtn = screen.getByText(/show/i);
+
+//     await userEvent.type(dateInput, '2022-02-30');
+//     await userEvent.click(showBtn);
+
+//     await waitFor(() => {
+//       const errorText = screen.getByLabelText(/error/i);
+
+//       expect(errorText).toHaveTextContent(/day is out of range for month/i);
+//     });
+//   });
 });

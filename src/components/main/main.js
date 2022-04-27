@@ -5,54 +5,68 @@ import ImageContainer from './imageContainer';
 import InfoContainer from './infoContainer';
 import Footer from '../footer';
 
-function parseDate(date = new Date()) {
-  const day = date.getDate()
-  const month = date.getMonth() + 1
-  const year = date.getFullYear()
-
-  if (month < 10){
-    return `${year}-0${month}-${day}`;
-  }
-
-  return `${year}-${month}-${day}`;
-}
+import { parseDate } from '../../utils/parseDate';
+import { fetchImage } from '../../utils/fetchImage';
 
 function Main() {
   const [date, setDate] = React.useState(parseDate());
   const [image, setImage] = React.useState({});
+  const [error, setError] = React.useState();
+
+  async function getImage(date) {
+    const response = await fetchImage(date);
+
+    if (!response.ok) {
+      setError(await response.json());
+
+      return;
+    }
+
+    setError(null);
+    setImage(await response.json());
+  }
 
   function handleOnChange(e) {
     setDate(e.target.value);
   }
 
-  async function handleOnClick() {
-      const response = await fetch(`https://api.nasa.gov/planetary/apod?api_key=9EzH6lZbenXDdtdPawEJVGNJ6nToY1PLueewH6GT&date=${date}`);
-      const imageData = await response.json();
-
-      setImage(imageData);
+  function handleOnClick() {
+    getImage(date);
   }
 
   React.useEffect(() => {
-    async function fetchImage() {
-        const response = await fetch('https://api.nasa.gov/planetary/apod?api_key=9EzH6lZbenXDdtdPawEJVGNJ6nToY1PLueewH6GT');
-        const imageData = await response.json();
-
-        setImage(imageData);
-    }
-
-    fetchImage();
+    getImage();
   }, []);
 
-  return (
+  if (error) {
+  }
+
+  const renderMainContent = () => {
+    if (error) {
+      return (
+        <React.Fragment>
+          <p>{error.msg}</p>
+        </React.Fragment>
+      );
+    }
+
+    return (
       <React.Fragment>
-        <Header />
-        <DateSelection handleOnChange={handleOnChange} handleOnClick={handleOnClick} />
         <ImageContainer
           date={image.date}
           imageUrl={image.url}
           title={image.title}
         />
         <InfoContainer explanation={image.explanation} />
+      </React.Fragment>
+    );
+  };
+
+  return (
+      <React.Fragment>
+        <Header />
+        <DateSelection handleOnChange={handleOnChange} handleOnClick={handleOnClick} />
+        {renderMainContent()}
         <Footer />
       </React.Fragment>
   );

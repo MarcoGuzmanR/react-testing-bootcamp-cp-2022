@@ -18,8 +18,8 @@ export const otherMockImage = {
   "url": "https://apod.nasa.gov/apod/image/2204/M104_HST_final2_1024.jpg"
 }
 
-export const wrongDatePhoto = {
+export const wrongDateImage = {
   "code": 400,
-  "msg": "Date must be between Jun 16, 1995 and Apr 24, 2022.",
+  "msg": "Date must be between Jun 16, 1995 and Apr 26, 2022.",
   "service_version": "v1"
 };
