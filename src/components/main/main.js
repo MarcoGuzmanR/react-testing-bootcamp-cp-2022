@@ -16,14 +16,19 @@ function Main() {
   async function getImage(date) {
     const response = await fetchImage(date);
 
-    if (!response.ok) {
-      setError(await response.json());
+    try {
+      if (!response.ok) {
+        setError(await response.json());
 
-      return;
+        return;
+      }
+
+      setError(null);
+      setImage(await response.json());
     }
-
-    setError(null);
-    setImage(await response.json());
+    catch (error) {
+      setError(error);
+    }
   }
 
   function handleOnChange(e) {
@@ -38,10 +43,7 @@ function Main() {
     getImage();
   }, []);
 
-  if (error) {
-  }
-
-  const renderMainContent = () => {
+  function renderMainContent(){
     if (error) {
       return (
         <React.Fragment>
@@ -51,16 +53,16 @@ function Main() {
     }
 
     return (
-      <React.Fragment>
+      <div className="main--container">
         <ImageContainer
           date={image.date}
           imageUrl={image.url}
           title={image.title}
         />
         <InfoContainer explanation={image.explanation} />
-      </React.Fragment>
+      </div>
     );
-  };
+  }
 
   return (
       <React.Fragment>
