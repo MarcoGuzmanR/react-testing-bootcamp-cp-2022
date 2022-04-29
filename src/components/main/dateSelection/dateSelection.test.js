@@ -11,7 +11,7 @@ const setup = () => render(
   <DateSelection handleOnChange={handleOnChange} handleOnClick={handleOnClick}/>
 );
 
-describe(('DateSelection component'), () => {
+describe(('DateSelection Component'), () => {
   it('renders the input and the show button', () => {
     setup();
 

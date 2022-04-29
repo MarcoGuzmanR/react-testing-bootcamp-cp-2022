@@ -31,8 +31,8 @@ function Main() {
     }
   }
 
-  function handleOnChange(e) {
-    setDate(e.target.value);
+  function handleOnChange(event) {
+    setDate(event.target.value);
   }
 
   function handleOnClick() {

@@ -4,12 +4,14 @@ import InfoContainer from '../infoContainer';
 
 import { mockImage } from '../../../mocks/data';
 
-it('renders the explanation of the image', () => {
-  render(
-    <InfoContainer explanation={mockImage.explanation} />
-  );
+describe('InfoContainer Component', () => {
+  it('renders the explanation of the image', () => {
+    render(
+      <InfoContainer explanation={mockImage.explanation} />
+    );
 
-  const photoExplanation = screen.getByText(mockImage.explanation);
+    const photoExplanation = screen.getByText(mockImage.explanation);
 
-  expect(photoExplanation).toBeInTheDocument();
+    expect(photoExplanation).toBeInTheDocument();
+  });
 });
