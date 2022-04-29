@@ -4,13 +4,21 @@ import { unParseDate } from '../utils/parseDate';
 import {
   mockImage,
   otherMockImage,
-  wrongDateImage
+  wrongDateImage,
+  wrongFormatDateImage
 } from './data';
 
 export const handlers = [
   rest.get('https://api.nasa.gov/planetary/apod', (req, res, ctx) => {
     if (req.url.searchParams.get('date')) {
       const date = unParseDate(req.url.searchParams.get('date'));
+
+      if (isNaN(date)) {
+        return res(
+          ctx.status(400),
+          ctx.json(wrongFormatDateImage)
+        );
+      }
 
       if (date > new Date()) {
         return res(

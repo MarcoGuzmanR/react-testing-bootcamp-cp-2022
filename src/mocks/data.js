@@ -23,3 +23,15 @@ export const wrongDateImage = {
   "msg": "Date must be between Jun 16, 1995 and Apr 26, 2022.",
   "service_version": "v1"
 };
+
+export const wrongFormatDateImage = {
+  "code": 400,
+  "msg": "time data 'abcde' does not match format '%Y-%m-%d'",
+  "service_version": "v1"
+}
+
+export const mockServerError = {
+  "code": 400,
+  "msg": "There was an error, please try again.",
+  "service_version": "v1"
+}
